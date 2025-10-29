@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>500 Workout Tracker</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; max-width: 500px; }
+  h1 { text-align: center; }
+  .counter { font-size: 2em; text-align: center; margin: 20px 0; }
+  button { width: 100%; padding: 20px; font-size: 1.4em; margin-top: 10px; }
+  .log { margin-top: 20px; font-size: 1.1em; }
+</style>
+</head>
+
+<body>
+<h1>500 Workout Round Tracker</h1>
+
+<div class="counter">
+  Round: <span id="roundCount">0</span> / 10
+</div>
+
+<button id="roundBtn">Complete Round</button>
+<button id="resetBtn" style="background:#ddd;">Reset</button>
+
+<div class="log" id="log"></div>
+
+<script>
+let round = 0;
+const log = document.getElementById('log');
+
+// Save progress between sessions
+if (localStorage.round) {
+  round = parseInt(localStorage.round);
+  document.getElementById('roundCount').innerText = round;
+  log.innerHTML = localStorage.log || "";
+}
+
+document.getElementById('roundBtn').onclick = function() {
+  if (round < 10) {
+    round++;
+    document.getElementById('roundCount').innerText = round;
+    const time = new Date().toLocaleTimeString();
+    log.innerHTML += "Round " + round + " completed at " + time + "<br>";
+    localStorage.round = round;
+    localStorage.log = log.innerHTML;
+  }
+};
+
+document.getElementById('resetBtn').onclick = function() {
+  if (confirm("Reset all progress?")) {
+    round = 0;
+    document.getElementById('roundCount').innerText = round;
+    log.innerHTML = "";
+    localStorage.removeItem('round');
+    localStorage.removeItem('log');
+  }
+};
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+
+</body>
+</html>
