@@ -1,0 +1,9 @@
+{
+  "name": "500 Workout Tracker",
+  "short_name": "500 Tracker",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": []
+}
